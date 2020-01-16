@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EasyWeather</string>
+    <string name="update_weather_info">Update</string>
+    <string name="retry_weather_loading">Retry</string>
 </resources>

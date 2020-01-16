@@ -41,6 +41,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
 
+    // compose
     implementation "androidx.compose:compose-runtime:0.1.0-dev03"
     implementation "androidx.ui:ui-core:0.1.0-dev03"
     implementation 'androidx.ui:ui-framework:0.1.0-dev03'
@@ -50,6 +51,11 @@ dependencies {
     implementation "androidx.ui:ui-text:0.1.0-dev03"
     implementation 'androidx.ui:ui-tooling:0.1.0-dev03'
     implementation 'androidx.ui:ui-android-text:0.1.0-dev03'
+
+    // lifecycle ext
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

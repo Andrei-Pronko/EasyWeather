@@ -17,7 +17,6 @@ import com.mentarey.easyweather.EasyWeatherState
 import com.mentarey.easyweather.R
 import com.mentarey.easyweather.ui.button.VectorImageButton
 import com.mentarey.easyweather.ui.model.WeatherType
-import java.nio.file.WatchEvent
 
 @Composable
 fun EasyWeatherAppBar(onNavigationButtonClick: () -> Unit) {
@@ -43,6 +42,7 @@ fun EasyWeatherContent(
         aligned(Alignment.TopCenter) {
             Column {
                 LoadingWidget(state.loadingState, retryWeatherLoading, updateWeather)
+                Text(text = state.weatherInfo)
             }
         }
     }

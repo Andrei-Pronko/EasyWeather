@@ -9,6 +9,7 @@ import androidx.compose.unaryPlus
 import androidx.ui.core.setContent
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
+import com.mentarey.easyweather.data.weather.model.WeatherInfo
 import com.mentarey.easyweather.ui.widget.Scaffold
 import com.mentarey.easyweather.ui.model.WeatherLoadingState
 import com.mentarey.easyweather.ui.model.WeatherType
@@ -19,7 +20,8 @@ import com.mentarey.easyweather.utils.observe
 @Model
 data class EasyWeatherState(
     var loadingState: WeatherLoadingState = WeatherLoadingState.Success,
-    var weatherType: WeatherType = WeatherType.Sun
+    var weatherType: WeatherType = WeatherType.Sun,
+    var weatherInfo: String = ""
 )
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         // Наблюдаем за изменением состояния
         localWeatherState.loadingState = +observe(easyWeatherViewModel.loading)
         localWeatherState.weatherType = +observe(easyWeatherViewModel.weatherType)
+        localWeatherState.weatherInfo = +observe(easyWeatherViewModel.weatherInfo)
 
         val onNavigationButtonClick: () -> Unit = {}
         Scaffold(
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 EasyWeatherContent(
                     state = localWeatherState,
                     retryWeatherLoading = { easyWeatherViewModel.retryWeatherLoading() },
-                    updateWeather = { easyWeatherViewModel.updateWeather() })
+                    updateWeather = { easyWeatherViewModel.getWeatherData() })
             }
         )
     }

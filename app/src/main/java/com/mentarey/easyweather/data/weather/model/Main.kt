@@ -12,5 +12,7 @@ data class Main(
     @SerializedName("temp_max")
     val tempMax: Double,
     @SerializedName("temp_min")
-    val tempMin: Double
+    val tempMin: Double,
+    @SerializedName("feels_like")
+    val feels_like: Double
 )

@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mentarey.easyweather.data.weather.WeatherClient
+import com.mentarey.easyweather.data.weather.model.current.WeatherNow
 import com.mentarey.easyweather.ui.model.WeatherLoadingState
 import com.mentarey.easyweather.ui.model.WeatherType
+import com.mentarey.easyweather.utils.toWeatherNow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,41 +20,25 @@ class EasyWeatherViewModel : ViewModel() {
         MutableLiveData(WeatherLoadingState.Success)
     val loading: LiveData<WeatherLoadingState> = _loading
 
-    private val _weatherType: MutableLiveData<WeatherType> =
-        MutableLiveData(WeatherType.Sun)
-    val weatherType: LiveData<WeatherType> = _weatherType
-
-    private val _weatherInfo: MutableLiveData<String> = MutableLiveData("")
-    val weatherInfo: LiveData<String> = _weatherInfo
-
-    fun retryWeatherLoading() {
-        viewModelScope.launch {
-            _loading.value = WeatherLoadingState.Loading
-            delay(2000)
-            _loading.value = WeatherLoadingState.Success
-            _weatherType.value = WeatherType.Rain
-        }
-    }
-
-    fun updateWeather() {
-        viewModelScope.launch {
-            _loading.value = WeatherLoadingState.Loading
-            delay(2000)
-            _loading.value = WeatherLoadingState.Error("Internet not available")
-            _weatherType.value = WeatherType.Sun
-        }
-    }
+    private val _weatherNow: MutableLiveData<WeatherNow> = MutableLiveData(WeatherNow())
+    val weatherNow: LiveData<WeatherNow> = _weatherNow
 
     fun getWeatherData() {
         viewModelScope.launch {
             _loading.value = WeatherLoadingState.Loading
             val result = withContext(Dispatchers.IO) {
                 val api = WeatherClient.weatherApi
-                api.getWeatherInfoAsync().await()
+                kotlin.runCatching {
+                    api.getCurrentWeatherAsync("Brest", "52.1", "23.7").await()
+                }
             }
-            _weatherInfo.value = result.toString()
-            _weatherType.value = WeatherType.Sun
-            _loading.value = WeatherLoadingState.Success
+            result
+                .onSuccess {
+                    _weatherNow.value = it.toWeatherNow()
+                    _loading.value = WeatherLoadingState.Success
+                }.onFailure {
+                    _loading.value = WeatherLoadingState.Error(it.message.toString())
+                }
         }
     }
 }

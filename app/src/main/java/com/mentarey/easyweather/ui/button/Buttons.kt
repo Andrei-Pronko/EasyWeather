@@ -24,7 +24,8 @@ fun VectorImageButton(@DrawableRes id: Int, onClick: () -> Unit) {
 
 @Composable
 fun VectorImage(
-    modifier: Modifier = Modifier.None, @DrawableRes id: Int,
+    modifier: Modifier = Modifier.None,
+    @DrawableRes id: Int,
     tint: Color = Color.Transparent
 ) {
     val vector = +vectorResource(id)
@@ -39,5 +40,4 @@ fun VectorImage(
             DrawVector(vector, tint)
         }
     }
-
 }

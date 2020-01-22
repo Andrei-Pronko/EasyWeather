@@ -15,8 +15,9 @@ import androidx.ui.layout.Stack
 import androidx.ui.material.TopAppBar
 import com.mentarey.easyweather.EasyWeatherState
 import com.mentarey.easyweather.R
+import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
+import com.mentarey.easyweather.data.weather.model.current.getBackgroundResId
 import com.mentarey.easyweather.ui.button.VectorImageButton
-import com.mentarey.easyweather.ui.model.WeatherType
 
 @Composable
 fun EasyWeatherAppBar(onNavigationButtonClick: () -> Unit) {
@@ -37,26 +38,21 @@ fun EasyWeatherContent(
 ) {
     Stack {
         expanded {
-            EasyWeatherBackground(state.weatherType)
+            EasyWeatherBackground(state.weatherNow.currentWeather)
         }
         aligned(Alignment.TopCenter) {
             Column {
                 LoadingWidget(state.loadingState, retryWeatherLoading, updateWeather)
-                Text(text = state.weatherInfo)
+                WeatherNowWidget(state.weatherNow)
             }
         }
     }
 }
 
 @Composable
-fun EasyWeatherBackground(weatherType: WeatherType) {
-    val weatherTypeId = when (weatherType) {
-        is WeatherType.Rain -> R.drawable.icon_rain
-        is WeatherType.Sun -> R.drawable.icon_sun
-        else -> R.drawable.icon_rain
-    }
+fun EasyWeatherBackground(currentWeather: CurrentWeather) {
     val context = +ambient(ContextAmbient)
-    val image = imageFromResource(context.resources, weatherTypeId)
+    val image = imageFromResource(context.resources, currentWeather.getBackgroundResId())
     Container(modifier = Expanded) {
         SimpleImage(image = image)
     }

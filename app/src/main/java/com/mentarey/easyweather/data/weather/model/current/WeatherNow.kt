@@ -7,12 +7,11 @@ import com.mentarey.easyweather.utils.SystemInfoUtils.nowTimeMillis
 data class WeatherNow(
     val city: String = "Брест",
     val currentTime: String = getStringTime(nowTimeMillis),
-    val lastWeatherUpdate: String = getStringTime(nowTimeMillis),
     val temperature: Temperature = Temperature(),
     val currentWeather: CurrentWeather = CurrentWeather(),
     val dayDuration: DayDuration = DayDuration(),
-    val clouds: Clouds = Clouds(),
-    val wind: Wind = Wind()
+    val wind: Wind = Wind(),
+    val extraOptions: ExtraOptions = ExtraOptions()
 )
 
 /**
@@ -28,12 +27,14 @@ fun CurrentWeather.getBackgroundResId(): Int = when (forecast) {
     "Clouds" -> R.drawable.bg_clouds
     "Rain" -> R.drawable.bg_rain
     "Sun" -> R.drawable.bg_sun
+    "Snow" -> R.drawable.bg_snow
+    "Clear" -> R.drawable.bg_clear
     else -> R.drawable.bg_default
 }
 
 data class DayDuration(
-    val sunrise: String = "08:00",
-    val sunset: String = "18:00"
+    val sunrise: Long = 1579775762,
+    val sunset: Long = 1579797733
 )
 
 data class Temperature(
@@ -46,17 +47,16 @@ data class Temperature(
 /**
  * Additional
  */
-data class Clouds(
-    val cloudiness: Int = 90 // процент покрутия облаками - чем выше, чем больше облаков
-)
 
 data class Wind(
-    val speed: Double = 10.0,  // скорость вертра
-    val gust: Double = 15.0,   // максимальные порывы
-    val degree: Int = 0,    // направление (o)
-    val scaleValue: Double = 0.2 // относительное значение
+    val speed: Double = 10.0,       // скорость вертра
+    val gust: Double = 15.0,        // максимальные порывы
+    val degree: Int = 0            // направление (o)
 )
 
-data class Pressure(
-    val pressure: Int = 760 // давление в мм. рт. ст.
+data class ExtraOptions(
+    val cloudiness: Int = 90,        // процент покрытия облаками - чем выше, чем больше облаков
+    val pressure: Int = 760,    // давление в мм. рт. ст.
+    val humidity: Int = 80,
+    val visibility: Double = 5.0
 )

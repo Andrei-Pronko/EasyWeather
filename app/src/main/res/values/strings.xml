@@ -2,4 +2,5 @@
     <string name="app_name">EasyWeather</string>
     <string name="update_weather_info">Update</string>
     <string name="retry_weather_loading">Retry</string>
+    <string name="default_weather_city">Брест</string>
 </resources>

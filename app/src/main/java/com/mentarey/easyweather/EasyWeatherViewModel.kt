@@ -23,13 +23,13 @@ class EasyWeatherViewModel : ViewModel() {
     private val _weatherNow: MutableLiveData<WeatherNow> = MutableLiveData(WeatherNow())
     val weatherNow: LiveData<WeatherNow> = _weatherNow
 
-    fun getWeatherData() {
+    fun getWeatherInTheCity(city: String = "Брест") {
         viewModelScope.launch {
             _loading.value = WeatherLoadingState.Loading
             val result = withContext(Dispatchers.IO) {
                 val api = WeatherClient.weatherApi
                 kotlin.runCatching {
-                    api.getCurrentWeatherAsync("Brest", "52.1", "23.7").await()
+                    api.getCurrentWeatherAsync(city, "52.1", "23.7").await()
                 }
             }
             result

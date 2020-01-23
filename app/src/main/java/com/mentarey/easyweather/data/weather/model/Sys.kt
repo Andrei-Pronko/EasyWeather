@@ -10,9 +10,9 @@ data class Sys(
     @SerializedName("message")
     val message: Double,
     @SerializedName("sunrise")
-    val sunrise: Int,
+    val sunrise: Long,
     @SerializedName("sunset")
-    val sunset: Int,
+    val sunset: Long,
     @SerializedName("type")
     val type: Int
 )

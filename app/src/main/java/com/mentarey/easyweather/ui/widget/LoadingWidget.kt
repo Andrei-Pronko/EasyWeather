@@ -53,6 +53,7 @@ fun WeatherLoading() {
 
 @Composable
 fun WeatherLoadingError(reason: String, retry: () -> Unit = {}) {
+    /*
     val context = +ambient(ContextAmbient)
     Padding(padding = 16.dp) {
         FlexColumn(
@@ -71,11 +72,12 @@ fun WeatherLoadingError(reason: String, retry: () -> Unit = {}) {
                 )
             }
         }
-    }
+    }*/
 }
 
 @Composable
 fun WeatherLoadingSuccess(update: () -> Unit = {}) {
+    /*
     val context = +ambient(ContextAmbient)
     Padding(padding = 16.dp) {
         Column(arrangement = Arrangement.Begin) {
@@ -84,7 +86,7 @@ fun WeatherLoadingSuccess(update: () -> Unit = {}) {
                 onClick = { update() }
             )
         }
-    }
+    }*/
 }
 
 /**

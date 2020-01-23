@@ -12,14 +12,12 @@ import androidx.ui.tooling.preview.Preview
 import com.mentarey.easyweather.data.weather.model.current.WeatherNow
 import com.mentarey.easyweather.ui.widget.Scaffold
 import com.mentarey.easyweather.ui.model.WeatherLoadingState
-import com.mentarey.easyweather.ui.model.WeatherType
 import com.mentarey.easyweather.ui.widget.EasyWeatherAppBar
 import com.mentarey.easyweather.ui.widget.EasyWeatherContent
-import com.mentarey.easyweather.utils.SystemInfoUtils
 import com.mentarey.easyweather.utils.observe
 
 @Model
-data class EasyWeatherState(
+data class EasyWeatherScreenState(
     var loadingState: WeatherLoadingState = WeatherLoadingState.Success,
     var weatherNow: WeatherNow = WeatherNow()
 )
@@ -37,30 +35,27 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun EasyWeatherApp() {
-        val localWeatherState by +state { EasyWeatherState() }
-
-        // Наблюдаем за изменением состояния
-
-        val currentWeatherNow = (+observe(easyWeatherViewModel.weatherNow))
+        val localWeatherState by +state { EasyWeatherScreenState() }
 
         localWeatherState.loadingState = +observe(easyWeatherViewModel.loading)
-        localWeatherState.weatherNow = localWeatherState.weatherNow.copy(
-            city = currentWeatherNow.city,
-            currentTime = SystemInfoUtils.getStringTime(SystemInfoUtils.nowTimeMillis),
-            currentWeather = currentWeatherNow.currentWeather,
-            temperature = currentWeatherNow.temperature
-        )
+        localWeatherState.weatherNow = +observe(easyWeatherViewModel.weatherNow)
 
-        val onNavigationButtonClick: () -> Unit = {}
+        val onWeatherCityChanged: (String) -> Unit =
+            { easyWeatherViewModel.getWeatherInTheCity(it) }
+        val onSearchButtonClick: () -> Unit =
+            { easyWeatherViewModel.getWeatherInTheCity(localWeatherState.weatherNow.city) }
+
         Scaffold(
             appBar = {
-                EasyWeatherAppBar(onNavigationButtonClick)
+                EasyWeatherAppBar(
+                    onSearchButtonClick = onSearchButtonClick,
+                    onWeatherCityChanged = onWeatherCityChanged
+                )
             },
             content = {
                 EasyWeatherContent(
-                    state = localWeatherState,
-                    retryWeatherLoading = { easyWeatherViewModel.getWeatherData() },
-                    updateWeather = { easyWeatherViewModel.getWeatherData() })
+                    easyWeatherScreenState = localWeatherState
+                )
             }
         )
     }

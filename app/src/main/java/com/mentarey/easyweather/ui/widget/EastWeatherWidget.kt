@@ -2,48 +2,68 @@ package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
 import androidx.compose.ambient
+import androidx.compose.state
 import androidx.compose.unaryPlus
-import androidx.ui.core.Alignment
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Text
+import androidx.ui.core.*
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.graphics.imageFromResource
-import androidx.ui.layout.Column
-import androidx.ui.layout.Container
-import androidx.ui.layout.Expanded
-import androidx.ui.layout.Stack
+import androidx.ui.input.ImeAction
+import androidx.ui.input.KeyboardType
+import androidx.ui.layout.*
 import androidx.ui.material.TopAppBar
-import com.mentarey.easyweather.EasyWeatherState
+import com.mentarey.easyweather.EasyWeatherScreenState
 import com.mentarey.easyweather.R
 import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
 import com.mentarey.easyweather.data.weather.model.current.getBackgroundResId
 import com.mentarey.easyweather.ui.button.VectorImageButton
+import com.mentarey.easyweather.ui.model.WeatherLoadingState
+import com.mentarey.easyweather.utils.hideKeyboard
 
 @Composable
-fun EasyWeatherAppBar(onNavigationButtonClick: () -> Unit) {
+fun EasyWeatherAppBar(
+    onSearchButtonClick: () -> Unit,
+    onWeatherCityChanged: (String) -> Unit
+) {
+    TopAppBar(
+        title = {
+            EnterCityWidget(onWeatherCityChanged = onWeatherCityChanged)
+        },
+        navigationIcon = {
+            VectorImageButton(id = R.drawable.baseline_search_24) { onSearchButtonClick() }
+        }
+    )
+}
+
+@Composable
+fun EnterCityWidget(onWeatherCityChanged: (String) -> Unit) {
     val context = +ambient(ContextAmbient)
-    TopAppBar(title = { Text(text = context.getString(R.string.app_name)) }) {
-        VectorImageButton(
-            R.drawable.baseline_menu_24,
-            onNavigationButtonClick
+    var state by +state { EditorModel(context.getString(R.string.default_weather_city)) }
+    Center {
+        TextField(
+            value = state,
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search,
+            onValueChange = { state = it },
+            onImeActionPerformed = {
+                if (it == ImeAction.Search) {
+                    onWeatherCityChanged(state.text)
+                    context.hideKeyboard()
+                }
+            }
         )
     }
 }
 
 @Composable
-fun EasyWeatherContent(
-    state: EasyWeatherState,
-    retryWeatherLoading: () -> Unit,
-    updateWeather: () -> Unit
-) {
+fun EasyWeatherContent(easyWeatherScreenState: EasyWeatherScreenState) {
     Stack {
         expanded {
-            EasyWeatherBackground(state.weatherNow.currentWeather)
+            EasyWeatherBackground(easyWeatherScreenState.weatherNow.currentWeather)
         }
         aligned(Alignment.TopCenter) {
-            Column {
-                LoadingWidget(state.loadingState, retryWeatherLoading, updateWeather)
-                WeatherNowWidget(state.weatherNow)
+            when (easyWeatherScreenState.loadingState) {
+                WeatherLoadingState.Loading -> WeatherLoading()
+                else -> WeatherNowWidget(easyWeatherScreenState.weatherNow)
             }
         }
     }

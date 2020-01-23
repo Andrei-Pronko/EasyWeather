@@ -6,6 +6,7 @@ import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.core.px
+import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Shadow
 import androidx.ui.layout.*
@@ -13,47 +14,48 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontFamily
 import androidx.ui.tooling.preview.Preview
-import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
-import com.mentarey.easyweather.data.weather.model.current.Temperature
-import com.mentarey.easyweather.data.weather.model.current.WeatherNow
 import com.mentarey.easyweather.R
+import com.mentarey.easyweather.data.weather.model.current.*
 import com.mentarey.easyweather.ui.button.VectorImage
 
 @Composable
 fun WeatherNowWidget(now: WeatherNow) {
-    Padding(padding = 8.dp) {
-        Column {
-            WeatherCityWidget(now.city)
-            WeatherTimeWidget(now.currentTime, now.lastWeatherUpdate)
-            WeatherTemperatureWidget(now.temperature)
-            HeightSpacer(height = 24.dp)
-            CurrentWeatherWidget(now.currentWeather)
+    VerticalScroller {
+        Padding(padding = 8.dp) {
+            Column {
+                WeatherCityWidget(now.city)
+                WeatherTimeWidget(now.currentTime)
+                WeatherTemperatureWidget(now.temperature)
+                HeightSpacer(height = 24.dp)
+                CurrentWeatherWidget(now.currentWeather)
+                HeightSpacer(height = 12.dp)
+                DayDurationWidget(now.dayDuration)
+                HeightSpacer(height = 12.dp)
+                WindWidget(now.wind)
+                HeightSpacer(height = 12.dp)
+                ExtraOptionsWidget(now.extraOptions)
+            }
         }
     }
 }
 
 @Composable
 fun WeatherCityWidget(city: String) {
-    val cityTextStyle = (+MaterialTheme.typography()).h3
-    CustomizableWeatherText(city, Height(80.dp) wraps ExpandedWidth, cityTextStyle)
+    val typography = +MaterialTheme.typography()
+    CustomizableWeatherText(city, Height(80.dp) wraps ExpandedWidth, typography.h3)
 }
 
 @Composable
-fun WeatherTimeWidget(currentTime: String, lastTimeUpdate: String) {
+fun WeatherTimeWidget(currentTime: String) {
     val typography = +MaterialTheme.typography()
-    val lastUpdate = "Обновлено: $lastTimeUpdate"
-    Column {
-        CustomizableWeatherText(currentTime, Height(45.dp) wraps ExpandedWidth, typography.h5)
-        HeightSpacer(height = 4.dp)
-        CustomizableWeatherText(lastUpdate, Height(30.dp) wraps ExpandedWidth, typography.subtitle2)
-    }
+    CustomizableWeatherText(currentTime, Height(45.dp) wraps ExpandedWidth, typography.h5)
 }
 
 @Composable
 fun WeatherTemperatureWidget(temperature: Temperature) {
     val currentTemp = "${temperature.current}$DEGREE_SYMBOL"
     val feelsLikeTemp = "Чувствуется как ${temperature.feelsLike}$DEGREE_SYMBOL"
-    val typography = (+MaterialTheme.typography())
+    val typography = +MaterialTheme.typography()
     Column {
         CustomizableWeatherText(currentTemp, Height(100.dp) wraps ExpandedWidth, typography.h1)
         HeightSpacer(height = 16.dp)
@@ -67,24 +69,69 @@ fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
         "Clouds" -> R.drawable.baseline_wb_cloudy_24
         else -> R.drawable.baseline_wb_sunny_24
     }
-    val typography = (+MaterialTheme.typography())
+    val typography = +MaterialTheme.typography()
     Row(ExpandedWidth wraps Height(40.dp)) {
         Padding(padding = 8.dp) {
             VectorImage(id = weatherIconId)
         }
-        CustomizableWeatherText(currentWeather.forecastWithLocale, Modifier.None, typography.h4)
+        CustomizableWeatherText(currentWeather.forecastWithLocale, Modifier.None, typography.h5)
+    }
+}
+
+@Composable
+fun DayDurationWidget(dayDuration: DayDuration) {
+    val typography = +MaterialTheme.typography()
+    val dayLength = (dayDuration.sunset - dayDuration.sunrise) / 60
+    val dayLengthMin = (dayLength % 60).toInt()
+    val dayLengthHours = (dayLength / 60).toInt()
+    CustomizableWeatherText(
+        "Продолжительность дня: ${dayLengthHours}ч. ${dayLengthMin}м.",
+        Modifier.None,
+        typography.h6
+    )
+}
+
+@Composable
+fun WindWidget(wind: Wind) {
+    val typography = +MaterialTheme.typography()
+    Column {
+        CustomizableWeatherText("Скорость ветра: ${wind.speed} м/c.", Modifier.None, typography.h6)
+        if (wind.gust > 0.0)
+            CustomizableWeatherText("Порывы до: ${wind.gust} м/c.", Modifier.None, typography.h6)
+        CustomizableWeatherText("Направление: ${wind.degree}°", Modifier.None, typography.h6)
+    }
+}
+
+@Composable
+fun ExtraOptionsWidget(extraOptions: ExtraOptions) {
+    val typography = +MaterialTheme.typography()
+    Column {
+        CustomizableWeatherText(
+            "Видимость: ${extraOptions.visibility} км.",
+            Modifier.None,
+            typography.h6
+        )
+        CustomizableWeatherText(
+            "Облачность: ${extraOptions.cloudiness}%",
+            Modifier.None,
+            typography.h6
+        )
+        CustomizableWeatherText(
+            "Влажность: ${extraOptions.humidity}%",
+            Modifier.None,
+            typography.h6
+        )
+        CustomizableWeatherText(
+            "Давление: ${extraOptions.pressure} мм.рт.ст",
+            Modifier.None,
+            typography.h6
+        )
     }
 }
 
 /**
  * Previews
  */
-
-@Preview
-@Composable
-fun WeatherNowWidgetPreview() {
-    WeatherNowWidget(WeatherNow())
-}
 
 @Composable
 private fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle: TextStyle) {
@@ -93,7 +140,7 @@ private fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle:
         text = text,
         style = TextStyle(
             color = Color.White,
-            fontFamily = FontFamily.Monospace,
+            fontFamily = FontFamily.SansSerif,
             fontWeight = textStyle.fontWeight,
             fontSize = textStyle.fontSize,
             shadow = Shadow(color = Color.Black, blurRadius = 2.px)

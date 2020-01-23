@@ -1,15 +1,13 @@
 package com.mentarey.easyweather.utils
 
 import com.mentarey.easyweather.data.weather.model.WeatherInfo
-import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
-import com.mentarey.easyweather.data.weather.model.current.Temperature
-import com.mentarey.easyweather.data.weather.model.current.WeatherNow
+import com.mentarey.easyweather.data.weather.model.current.*
 import com.mentarey.easyweather.utils.SystemInfoUtils.getStringTime
 
 fun WeatherInfo.toWeatherNow(): WeatherNow =
     WeatherNow(
         city = name,
-        lastWeatherUpdate = getStringTime(dt),
+        currentTime = getStringTime(SystemInfoUtils.nowTimeMillis),
         temperature = Temperature(
             current = main.temp,
             min = main.tempMin,
@@ -19,5 +17,20 @@ fun WeatherInfo.toWeatherNow(): WeatherNow =
         currentWeather = CurrentWeather(
             forecast = weather[0].main,
             forecastWithLocale = weather[0].description
+        ),
+        dayDuration = DayDuration(
+            sunrise = sys.sunrise,
+            sunset = sys.sunset
+        ),
+        wind = Wind(
+            speed = wind.speed,
+            degree = wind.deg,
+            gust = wind.gust
+        ),
+        extraOptions = ExtraOptions(
+            cloudiness = clouds.all,
+            pressure = (main.pressure / 1.333).toInt(),
+            humidity = main.humidity,
+            visibility = (visibility / 1000).toDouble()
         )
     )

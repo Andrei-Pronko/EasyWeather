@@ -1,6 +1,6 @@
 package com.mentarey.easyweather.utils
 
-import com.mentarey.easyweather.data.weather.model.WeatherInfo
+import com.mentarey.easyweather.data.weather.model.api.WeatherInfo
 import com.mentarey.easyweather.data.weather.model.current.*
 import com.mentarey.easyweather.utils.SystemInfoUtils.getStringTime
 

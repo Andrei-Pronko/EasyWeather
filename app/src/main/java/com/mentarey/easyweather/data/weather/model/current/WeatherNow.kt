@@ -23,6 +23,15 @@ data class CurrentWeather(
     val forecastWithLocale: String = "облачно"     // текущий прогноз на языке системы
 )
 
+fun CurrentWeather.getIconResId(): Int = when (forecast) {
+    "Clouds" -> R.drawable.icon_cloud
+    "Rain" -> R.drawable.icon_rain
+    "Sun" -> R.drawable.icon_sun
+    "Snow" -> R.drawable.icon_snow
+    "Clear" -> R.drawable.icon_clear
+    else -> R.drawable.icon_clear
+}
+
 fun CurrentWeather.getBackgroundResId(): Int = when (forecast) {
     "Clouds" -> R.drawable.bg_clouds
     "Rain" -> R.drawable.bg_rain

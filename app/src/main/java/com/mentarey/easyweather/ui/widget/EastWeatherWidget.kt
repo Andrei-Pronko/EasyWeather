@@ -4,40 +4,55 @@ import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.state
 import androidx.compose.unaryPlus
-import androidx.ui.core.*
+import androidx.ui.core.Alignment
+import androidx.ui.core.ContextAmbient
+import androidx.ui.core.EditorModel
+import androidx.ui.core.TextField
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.graphics.imageFromResource
 import androidx.ui.input.ImeAction
 import androidx.ui.input.KeyboardType
-import androidx.ui.layout.*
+import androidx.ui.layout.Center
+import androidx.ui.layout.Container
+import androidx.ui.layout.Expanded
+import androidx.ui.layout.Stack
+import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.TopAppBar
-import com.mentarey.easyweather.EasyWeatherScreenState
 import com.mentarey.easyweather.R
 import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
 import com.mentarey.easyweather.data.weather.model.current.getBackgroundResId
 import com.mentarey.easyweather.ui.button.VectorImageButton
-import com.mentarey.easyweather.ui.model.WeatherLoadingState
+import com.mentarey.easyweather.ui.state.WeatherLoadingState
+import com.mentarey.easyweather.ui.state.EasyWeatherScreenState
 import com.mentarey.easyweather.utils.hideKeyboard
 
 @Composable
 fun EasyWeatherAppBar(
+    defaultCity: String,
     onSearchButtonClick: () -> Unit,
     onWeatherCityChanged: (String) -> Unit
 ) {
     TopAppBar(
         title = {
-            EnterCityWidget(onWeatherCityChanged = onWeatherCityChanged)
+            EnterCityWidget(
+                defaultCity = defaultCity,
+                onWeatherCityChanged = onWeatherCityChanged
+            )
         },
         navigationIcon = {
-            VectorImageButton(id = R.drawable.baseline_search_24) { onSearchButtonClick() }
+            VectorImageButton(
+                id = R.drawable.baseline_loop_24
+            ) {
+                onSearchButtonClick()
+            }
         }
     )
 }
 
 @Composable
-fun EnterCityWidget(onWeatherCityChanged: (String) -> Unit) {
+fun EnterCityWidget(defaultCity: String, onWeatherCityChanged: (String) -> Unit) {
     val context = +ambient(ContextAmbient)
-    var state by +state { EditorModel(context.getString(R.string.default_weather_city)) }
+    var state by +state { EditorModel(defaultCity) }
     Center {
         TextField(
             value = state,
@@ -63,9 +78,17 @@ fun EasyWeatherContent(easyWeatherScreenState: EasyWeatherScreenState) {
         aligned(Alignment.TopCenter) {
             when (easyWeatherScreenState.loadingState) {
                 WeatherLoadingState.Loading -> WeatherLoading()
+                WeatherLoadingState.Empty -> EasyWeatherEmpty()
                 else -> WeatherNowWidget(easyWeatherScreenState.weatherNow)
             }
         }
+    }
+}
+
+@Composable
+fun EasyWeatherEmpty() {
+    Center {
+        CircularProgressIndicator()
     }
 }
 

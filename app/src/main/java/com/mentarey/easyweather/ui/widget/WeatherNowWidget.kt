@@ -13,8 +13,6 @@ import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
 import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontFamily
-import androidx.ui.tooling.preview.Preview
-import com.mentarey.easyweather.R
 import com.mentarey.easyweather.data.weather.model.current.*
 import com.mentarey.easyweather.ui.button.VectorImage
 
@@ -65,10 +63,7 @@ fun WeatherTemperatureWidget(temperature: Temperature) {
 
 @Composable
 fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
-    val weatherIconId = when (currentWeather.forecast) {
-        "Clouds" -> R.drawable.baseline_wb_cloudy_24
-        else -> R.drawable.baseline_wb_sunny_24
-    }
+    val weatherIconId = currentWeather.getIconResId()
     val typography = +MaterialTheme.typography()
     Row(ExpandedWidth wraps Height(40.dp)) {
         Padding(padding = 8.dp) {

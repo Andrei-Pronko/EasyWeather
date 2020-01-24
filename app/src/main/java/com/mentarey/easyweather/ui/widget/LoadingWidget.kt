@@ -1,18 +1,13 @@
 package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.unaryPlus
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.layout.*
-import androidx.ui.material.Button
 import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
-import com.mentarey.easyweather.R
-import com.mentarey.easyweather.ui.model.WeatherLoadingState
+import com.mentarey.easyweather.ui.state.WeatherLoadingState
 
 @Composable
 fun LoadingWidget(

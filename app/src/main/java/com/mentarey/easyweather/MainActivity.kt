@@ -3,28 +3,22 @@ package com.mentarey.easyweather
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
-import androidx.compose.Model
 import androidx.compose.state
 import androidx.compose.unaryPlus
+import androidx.lifecycle.lifecycleScope
 import androidx.ui.core.setContent
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
-import com.mentarey.easyweather.data.weather.model.current.WeatherNow
-import com.mentarey.easyweather.ui.widget.Scaffold
-import com.mentarey.easyweather.ui.model.WeatherLoadingState
+import com.mentarey.easyweather.ui.state.EasyWeatherScreenState
 import com.mentarey.easyweather.ui.widget.EasyWeatherAppBar
 import com.mentarey.easyweather.ui.widget.EasyWeatherContent
+import com.mentarey.easyweather.ui.widget.Scaffold
 import com.mentarey.easyweather.utils.observe
-
-@Model
-data class EasyWeatherScreenState(
-    var loadingState: WeatherLoadingState = WeatherLoadingState.Success,
-    var weatherNow: WeatherNow = WeatherNow()
-)
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val easyWeatherViewModel: EasyWeatherViewModel = EasyWeatherViewModel()
+    private val easyWeatherViewModel: EasyWeatherViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     fun EasyWeatherApp() {
         val localWeatherState by +state { EasyWeatherScreenState() }
 
+        localWeatherState.lastCity = +observe(easyWeatherViewModel.lastCity)
         localWeatherState.loadingState = +observe(easyWeatherViewModel.loading)
         localWeatherState.weatherNow = +observe(easyWeatherViewModel.weatherNow)
 
@@ -48,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         Scaffold(
             appBar = {
                 EasyWeatherAppBar(
+                    defaultCity = localWeatherState.lastCity,
                     onSearchButtonClick = onSearchButtonClick,
                     onWeatherCityChanged = onWeatherCityChanged
                 )

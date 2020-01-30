@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.compose.state
-import androidx.compose.unaryPlus
-import androidx.lifecycle.lifecycleScope
 import androidx.ui.core.setContent
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
@@ -29,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun EasyWeatherApp() {
-        val localWeatherState by +state { EasyWeatherScreenState() }
+        val localWeatherState by state { EasyWeatherScreenState() }
 
-        localWeatherState.lastCity = +observe(easyWeatherViewModel.lastCity)
-        localWeatherState.loadingState = +observe(easyWeatherViewModel.loading)
-        localWeatherState.weatherNow = +observe(easyWeatherViewModel.weatherNow)
+        localWeatherState.lastCity = observe(easyWeatherViewModel.lastCity)
+        localWeatherState.loadingState = observe(easyWeatherViewModel.loading)
+        localWeatherState.weatherNow = observe(easyWeatherViewModel.weatherNow)
 
         val onWeatherCityChanged: (String) -> Unit =
             { easyWeatherViewModel.getWeatherInTheCity(it) }

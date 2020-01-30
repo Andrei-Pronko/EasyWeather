@@ -1,12 +1,13 @@
 package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
-import androidx.compose.unaryPlus
-import androidx.ui.core.dp
-import androidx.ui.layout.*
+import androidx.ui.layout.Container
+import androidx.ui.layout.LayoutHeight
+import androidx.ui.layout.Padding
 import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
+import androidx.ui.unit.dp
 import com.mentarey.easyweather.ui.state.WeatherLoadingState
 
 @Composable
@@ -15,7 +16,7 @@ fun LoadingWidget(
     retryWeatherLoading: () -> Unit,
     updateWeather: () -> Unit
 ) {
-    Container(modifier = Height(100.dp) wraps ExpandedWidth) {
+    Container(modifier = LayoutHeight(100.dp)) {
         LoadingStateUi(weatherLoadingState, retryWeatherLoading, updateWeather)
     }
 }
@@ -40,7 +41,7 @@ fun LoadingStateUi(
 
 @Composable
 fun WeatherLoading() {
-    val progressColor = (+MaterialTheme.colors()).primary
+    val progressColor = MaterialTheme.colors().primary
     Padding(padding = 16.dp) {
         LinearProgressIndicator(progressColor)
     }

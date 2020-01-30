@@ -2,16 +2,16 @@ package com.mentarey.easyweather.ui.button
 
 import androidx.annotation.DrawableRes
 import androidx.compose.Composable
-import androidx.compose.unaryPlus
-import androidx.ui.core.Modifier
 import androidx.ui.core.WithDensity
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Container
-import androidx.ui.layout.Size
+import androidx.ui.layout.LayoutSize
 import androidx.ui.material.ripple.Ripple
+import androidx.ui.res.stringResource
 import androidx.ui.res.vectorResource
+import com.mentarey.easyweather.R
 
 @Composable
 fun VectorImageButton(@DrawableRes id: Int, onClick: () -> Unit) {
@@ -24,18 +24,12 @@ fun VectorImageButton(@DrawableRes id: Int, onClick: () -> Unit) {
 
 @Composable
 fun VectorImage(
-    modifier: Modifier = Modifier.None,
     @DrawableRes id: Int,
     tint: Color = Color.Transparent
 ) {
-    val vector = +vectorResource(id)
+    val vector = vectorResource(id)
     WithDensity {
-        Container(
-            modifier = modifier wraps Size(
-                vector.defaultWidth.toDp(),
-                vector.defaultHeight.toDp()
-            )
-        )
+        Container(modifier = LayoutSize(vector.defaultWidth, vector.defaultHeight))
         {
             DrawVector(vector, tint)
         }

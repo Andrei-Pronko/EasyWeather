@@ -93,15 +93,3 @@ fun WeatherLoadingSuccess(update: () -> Unit = {}) {
 fun WeatherLoadingPreview() {
     WeatherLoading()
 }
-
-@Preview
-@Composable
-fun WeatherLoadingErrorPreview() {
-    WeatherLoadingError("Internet not available")
-}
-
-@Preview
-@Composable
-fun WeatherLoadingSuccessPreview() {
-    WeatherLoadingSuccess()
-}

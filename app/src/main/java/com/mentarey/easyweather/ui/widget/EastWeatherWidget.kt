@@ -13,6 +13,7 @@ import androidx.ui.input.KeyboardType
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.TopAppBar
+import androidx.ui.tooling.preview.Preview
 import com.mentarey.easyweather.R
 import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
 import com.mentarey.easyweather.data.weather.model.current.getBackgroundResId
@@ -94,4 +95,10 @@ fun EasyWeatherBackground(currentWeather: CurrentWeather) {
     Container {
         SimpleImage(image = image)
     }
+}
+
+@Preview
+@Composable
+fun EasyWeatherAppBarPreview() {
+    EasyWeatherAppBar("Brest", {}, {})
 }

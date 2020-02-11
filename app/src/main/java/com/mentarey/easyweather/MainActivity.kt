@@ -4,13 +4,17 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.compose.state
+import androidx.ui.core.Text
 import androidx.ui.core.setContent
+import androidx.ui.foundation.VerticalScroller
+import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
+import androidx.ui.unit.dp
+import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
+import com.mentarey.easyweather.data.weather.model.current.WeatherNow
 import com.mentarey.easyweather.ui.state.EasyWeatherScreenState
-import com.mentarey.easyweather.ui.widget.EasyWeatherAppBar
-import com.mentarey.easyweather.ui.widget.EasyWeatherContent
-import com.mentarey.easyweather.ui.widget.Scaffold
+import com.mentarey.easyweather.ui.widget.*
 import com.mentarey.easyweather.utils.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,9 +51,7 @@ class MainActivity : AppCompatActivity() {
                 )
             },
             content = {
-                EasyWeatherContent(
-                    easyWeatherScreenState = localWeatherState
-                )
+                EasyWeatherContent(easyWeatherScreenState = localWeatherState)
             }
         )
     }
@@ -57,8 +59,6 @@ class MainActivity : AppCompatActivity() {
     @Preview
     @Composable
     fun DefaultPreview() {
-        MaterialTheme {
-            EasyWeatherApp()
-        }
+        EasyWeatherApp()
     }
 }

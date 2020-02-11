@@ -17,22 +17,18 @@ import com.mentarey.easyweather.ui.button.VectorImage
 
 @Composable
 fun WeatherNowWidget(now: WeatherNow) {
-    VerticalScroller {
-        Padding(padding = 8.dp) {
-            Column {
-                WeatherCityWidget(now.city)
-                WeatherTimeWidget(now.currentTime)
-                WeatherTemperatureWidget(now.temperature)
-                Spacer(LayoutHeight(height = 24.dp))
-                CurrentWeatherWidget(now.currentWeather)
-                Spacer(LayoutHeight(height = 12.dp))
-                DayDurationWidget(now.dayDuration)
-                Spacer(LayoutHeight(height = 12.dp))
-                WindWidget(now.wind)
-                Spacer(LayoutHeight(height = 12.dp))
-                ExtraOptionsWidget(now.extraOptions)
-            }
-        }
+    Column(LayoutPadding(8.dp)) {
+        WeatherCityWidget(now.city)
+        WeatherTimeWidget(now.currentTime)
+        WeatherTemperatureWidget(now.temperature)
+        Spacer(LayoutHeight(height = 24.dp))
+        CurrentWeatherWidget(now.currentWeather)
+        Spacer(LayoutHeight(height = 12.dp))
+        DayDurationWidget(now.dayDuration)
+        Spacer(LayoutHeight(height = 12.dp))
+        WindWidget(now.wind)
+        Spacer(LayoutHeight(height = 12.dp))
+        ExtraOptionsWidget(now.extraOptions)
     }
 }
 
@@ -64,7 +60,7 @@ fun WeatherTemperatureWidget(temperature: Temperature) {
 fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
     val weatherIconId = currentWeather.getIconResId()
     val typography = MaterialTheme.typography()
-    Row(LayoutWrapped + LayoutHeight(40.dp)) {
+    Row(LayoutWidth.Fill + LayoutHeight(40.dp)) {
         Padding(padding = 8.dp) {
             VectorImage(id = weatherIconId)
         }
@@ -128,7 +124,7 @@ fun ExtraOptionsWidget(extraOptions: ExtraOptions) {
  */
 
 @Composable
-private fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle: TextStyle) {
+fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle: TextStyle) {
     Text(
         modifier = modifier,
         text = text,

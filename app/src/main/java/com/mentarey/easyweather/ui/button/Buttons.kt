@@ -9,9 +9,7 @@ import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutSize
 import androidx.ui.material.ripple.Ripple
-import androidx.ui.res.stringResource
 import androidx.ui.res.vectorResource
-import com.mentarey.easyweather.R
 
 @Composable
 fun VectorImageButton(@DrawableRes id: Int, onClick: () -> Unit) {

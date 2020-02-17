@@ -129,7 +129,7 @@ fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle: TextSty
         modifier = modifier,
         text = text,
         style = TextStyle(
-            color = Color.White,
+            color = MaterialTheme.colors().onPrimary,
             fontFamily = FontFamily.SansSerif,
             fontWeight = textStyle.fontWeight,
             fontSize = textStyle.fontSize,

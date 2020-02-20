@@ -1,10 +1,8 @@
 package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.state
 import androidx.ui.core.ContextAmbient
-import androidx.ui.core.EditorModel
 import androidx.ui.core.TextField
 import androidx.ui.foundation.SimpleImage
 import androidx.ui.graphics.imageFromResource
@@ -13,6 +11,7 @@ import androidx.ui.input.KeyboardType
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.TopAppBar
+import androidx.ui.text.TextFieldValue
 import androidx.ui.tooling.preview.Preview
 import com.mentarey.easyweather.R
 import com.mentarey.easyweather.data.weather.model.current.CurrentWeather
@@ -24,43 +23,43 @@ import com.mentarey.easyweather.utils.hideKeyboard
 
 @Composable
 fun EasyWeatherAppBar(
-    defaultCity: String,
-    onSearchButtonClick: () -> Unit,
-    onWeatherCityChanged: (String) -> Unit
+        defaultCity: String,
+        onSearchButtonClick: () -> Unit,
+        onWeatherCityChanged: (String) -> Unit
 ) {
     TopAppBar(
-        title = {
-            EnterCityWidget(
-                defaultCity = defaultCity,
-                onWeatherCityChanged = onWeatherCityChanged
-            )
-        },
-        navigationIcon = {
-            VectorImageButton(
-                id = R.drawable.baseline_loop_24
-            ) {
-                onSearchButtonClick()
+            title = {
+                EnterCityWidget(
+                        defaultCity = defaultCity,
+                        onWeatherCityChanged = onWeatherCityChanged
+                )
+            },
+            navigationIcon = {
+                VectorImageButton(
+                        id = R.drawable.baseline_loop_24
+                ) {
+                    onSearchButtonClick()
+                }
             }
-        }
     )
 }
 
 @Composable
 fun EnterCityWidget(defaultCity: String, onWeatherCityChanged: (String) -> Unit) {
-    val context = ambient(ContextAmbient)
-    var state by state { EditorModel(defaultCity) }
+    val context = ContextAmbient.current
+    var state by state { TextFieldValue(defaultCity) }
     Center {
         TextField(
-            value = state,
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Search,
-            onValueChange = { state = it },
-            onImeActionPerformed = {
-                if (it == ImeAction.Search) {
-                    onWeatherCityChanged(state.text)
-                    context.hideKeyboard()
+                value = state,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search,
+                onValueChange = { state = it },
+                onImeActionPerformed = {
+                    if (it == ImeAction.Search) {
+                        onWeatherCityChanged(state.text)
+                        context.hideKeyboard()
+                    }
                 }
-            }
         )
     }
 }
@@ -90,7 +89,7 @@ fun EasyWeatherEmpty() {
 
 @Composable
 fun EasyWeatherBackground(currentWeather: CurrentWeather) {
-    val context = ambient(ContextAmbient)
+    val context = ContextAmbient.current
     val image = imageFromResource(context.resources, currentWeather.getBackgroundResId())
     Container {
         SimpleImage(image = image)

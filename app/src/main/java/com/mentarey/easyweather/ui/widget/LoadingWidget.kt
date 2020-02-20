@@ -2,8 +2,8 @@ package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
 import androidx.ui.layout.Container
+import androidx.ui.layout.EdgeInsets
 import androidx.ui.layout.LayoutHeight
-import androidx.ui.layout.Padding
 import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
@@ -42,7 +42,7 @@ fun LoadingStateUi(
 @Composable
 fun WeatherLoading() {
     val progressColor = MaterialTheme.colors().primary
-    Padding(padding = 16.dp) {
+    Container(padding = EdgeInsets(16.dp)) {
         LinearProgressIndicator(progressColor)
     }
 }

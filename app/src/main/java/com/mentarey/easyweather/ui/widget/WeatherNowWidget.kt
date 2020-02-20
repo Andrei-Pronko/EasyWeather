@@ -3,7 +3,6 @@ package com.mentarey.easyweather.ui.widget
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
-import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Shadow
 import androidx.ui.layout.*
@@ -61,7 +60,7 @@ fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
     val weatherIconId = currentWeather.getIconResId()
     val typography = MaterialTheme.typography()
     Row(LayoutWidth.Fill + LayoutHeight(40.dp)) {
-        Padding(padding = 8.dp) {
+        Container(padding = EdgeInsets(8.dp)) {
             VectorImage(id = weatherIconId)
         }
         CustomizableWeatherText(currentWeather.forecastWithLocale, Modifier.None, typography.h5)

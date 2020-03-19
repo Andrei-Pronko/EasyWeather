@@ -11,24 +11,11 @@ object SystemInfoUtils {
     val currentLanguage: String
         get() = Locale.getDefault().language
 
-    val fileCreationDate: String
-        get() = fileNameDateFormat.format(Calendar.getInstance().time)
-
     val nowTimeMillis: Long
         get() = Calendar.getInstance().time.time
 
-    val lastMonthTimeMillis: Long
-        get() = Calendar.getInstance().apply { add(Calendar.MONTH, -1) }.timeInMillis
-
-    val formattedSummaryDate: String
-        get() = summaryDateFormat.format(Calendar.getInstance().time)
-
     fun getStringTime(time: Long): String {
         return summaryDateFormat.format(time)
-    }
-
-    fun getStringTimeFromStringData(data: String): String {
-        return summaryDateFormat.format(Date(java.lang.Long.valueOf(data)))
     }
 
     private val summaryDateFormat: SimpleDateFormat

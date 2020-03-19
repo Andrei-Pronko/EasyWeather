@@ -10,8 +10,8 @@ interface WeatherApi {
     @GET("/weather")
     fun getCurrentWeatherAsync(
         @Query("q") q: String,
-        @Query("lat") lat: String,
-        @Query("lon") lon: String,
+        @Query("lat") lat: String = "52.1",
+        @Query("lon") lon: String = "23.7",
         @Query("units") units: String = DEFAULT_METRIC_SYSTEM,
         @Query("lang") lang: String = SystemInfoUtils.currentLanguage
     ): Deferred<WeatherInfo>

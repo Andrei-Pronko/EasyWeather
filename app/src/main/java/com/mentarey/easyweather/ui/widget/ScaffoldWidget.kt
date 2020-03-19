@@ -30,7 +30,7 @@ fun Scaffold(
             Container(LayoutHeight(56.dp) + LayoutWidth.Fill) {
                 appBar()
             }
-            Container(LayoutFlexible(1f)) {
+            Container(LayoutWeight(1f)) {
                 content()
             }
         }
@@ -43,6 +43,7 @@ sealed class AppThemeSupport {
     object FollowSystem : AppThemeSupport()
 }
 
+@Composable
 private fun AppThemeSupport.getCurrentColorPalette(
     lightColorPalette: ColorPalette = lightColorPalette(),
     darkColorPalette: ColorPalette = darkColorPalette()

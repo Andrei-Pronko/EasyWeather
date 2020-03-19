@@ -39,10 +39,8 @@ class EasyWeatherViewModel(
         saveLastCity(city)
         viewModelScope.launch {
             _loading.value = WeatherLoadingState.Loading
-            val result = withContext(Dispatchers.IO) {
-                kotlin.runCatching {
-                    weatherApi.getCurrentWeatherAsync(city, "52.1", "23.7").await()
-                }
+            val result = runCatching {
+                weatherApi.getCurrentWeatherAsync(city).await()
             }
             result
                 .onSuccess {
@@ -76,7 +74,7 @@ class EasyWeatherViewModel(
         }
     }
 
-    private fun saveLastCity(city: String) {
+    fun saveLastCity(city: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) { lastWeatherRepository.setLastWeatherCity(city) }
         }

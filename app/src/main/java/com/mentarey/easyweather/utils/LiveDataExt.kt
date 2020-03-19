@@ -4,6 +4,7 @@ import androidx.compose.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
+@Composable
 fun <T> observe(data: LiveData<T>): T {
     val result = state { data.value }
     val observer = remember { Observer<T> { result.value = it } }

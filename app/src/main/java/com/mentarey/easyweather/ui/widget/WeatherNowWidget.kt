@@ -59,6 +59,7 @@ fun WeatherTemperatureWidget(temperature: Temperature) {
 fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
     val weatherIconId = currentWeather.getIconResId()
     val typography = MaterialTheme.typography()
+
     Row(LayoutWidth.Fill + LayoutHeight(40.dp)) {
         Container(padding = EdgeInsets(8.dp)) {
             VectorImage(id = weatherIconId)

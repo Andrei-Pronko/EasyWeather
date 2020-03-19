@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.compose.state
+import androidx.lifecycle.LiveData
 import androidx.ui.core.setContent
 import androidx.ui.tooling.preview.Preview
 import com.mentarey.easyweather.ui.state.EasyWeatherScreenState
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     fun EasyWeatherApp() {
         val localWeatherState by state { EasyWeatherScreenState() }
 
+        var lastCityState by state { easyWeatherViewModel.lastCity.current }
+
         localWeatherState.lastCity = observe(easyWeatherViewModel.lastCity)
         localWeatherState.loadingState = observe(easyWeatherViewModel.loading)
         localWeatherState.weatherNow = observe(easyWeatherViewModel.weatherNow)
@@ -35,14 +38,19 @@ class MainActivity : AppCompatActivity() {
         val onWeatherCityChanged: (String) -> Unit =
             { easyWeatherViewModel.getWeatherInTheCity(it) }
         val onSearchButtonClick: () -> Unit =
-            { easyWeatherViewModel.getWeatherInTheCity(localWeatherState.weatherNow.city) }
+            { easyWeatherViewModel.getWeatherInTheCity(lastCityState) }
+        val onTextEnterStopped: (String) -> Unit = {
+            lastCityState = it
+            easyWeatherViewModel.saveLastCity(it)
+        }
 
         Scaffold(
             appBar = {
                 EasyWeatherAppBar(
                     defaultCity = localWeatherState.lastCity,
                     onSearchButtonClick = onSearchButtonClick,
-                    onWeatherCityChanged = onWeatherCityChanged
+                    onSearchButtonClicked = onWeatherCityChanged,
+                    onTextEnterStopped = onTextEnterStopped
                 )
             },
             content = {
@@ -56,4 +64,7 @@ class MainActivity : AppCompatActivity() {
     fun DefaultPreview() {
         EasyWeatherApp()
     }
+
+    private val LiveData<String>.current: String
+        get() = value ?: ""
 }

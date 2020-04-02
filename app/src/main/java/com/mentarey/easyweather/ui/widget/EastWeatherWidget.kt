@@ -2,16 +2,21 @@ package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
 import androidx.compose.state
+import androidx.ui.core.Alignment
 import androidx.ui.core.ContextAmbient
-import androidx.ui.core.TextField
+import androidx.ui.core.Modifier
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Image
+import androidx.ui.foundation.TextField
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.ScaleFit
 import androidx.ui.graphics.imageFromResource
 import androidx.ui.input.ImeAction
 import androidx.ui.input.KeyboardType
-import androidx.ui.layout.*
+import androidx.ui.layout.Stack
+import androidx.ui.layout.fillMaxSize
+import androidx.ui.layout.wrapContentSize
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.IconButton
 import androidx.ui.material.TopAppBar
@@ -42,7 +47,7 @@ fun EasyWeatherAppBar(
         },
         actions = {
             IconButton(onClick = onSearchButtonClick) {
-                Icon(icon = Icons.Filled.Search)
+                Icon(Icons.Filled.Search)
             }
         }
     )
@@ -56,7 +61,7 @@ fun EnterCityWidget(
 ) {
     val context = ContextAmbient.current
     var state by state { TextFieldValue(defaultCity) }
-    Center {
+    Box(Modifier.fillMaxSize() + Modifier.wrapContentSize(Alignment.Center)) {
         TextField(
             value = state,
             keyboardType = KeyboardType.Text,
@@ -77,7 +82,7 @@ fun EnterCityWidget(
 fun EasyWeatherContent(easyWeatherScreenState: EasyWeatherScreenState) {
     Stack {
         EasyWeatherBackground(easyWeatherScreenState.weatherNow.currentWeather)
-        Container(LayoutGravity.TopCenter) {
+        Box(Modifier.gravity(Alignment.TopCenter)) {
             when (easyWeatherScreenState.loadingState) {
                 WeatherLoadingState.Loading -> WeatherLoading()
                 WeatherLoadingState.Empty -> EasyWeatherEmpty()
@@ -89,8 +94,8 @@ fun EasyWeatherContent(easyWeatherScreenState: EasyWeatherScreenState) {
 
 @Composable
 fun EasyWeatherEmpty() {
-    Center {
-        CircularProgressIndicator(Color.Blue)
+    Box {
+        CircularProgressIndicator(Modifier.wrapContentSize(Alignment.TopCenter), (Color.Blue))
     }
 }
 
@@ -98,7 +103,7 @@ fun EasyWeatherEmpty() {
 fun EasyWeatherBackground(currentWeather: CurrentWeather) {
     val context = ContextAmbient.current
     val image = imageFromResource(context.resources, currentWeather.getBackgroundResId())
-    Image(image = image, modifier = LayoutSize.Fill, scaleFit = ScaleFit.None)
+    Image(asset = image, modifier = Modifier.fillMaxSize(), scaleFit = ScaleFit.None)
 }
 
 @Preview

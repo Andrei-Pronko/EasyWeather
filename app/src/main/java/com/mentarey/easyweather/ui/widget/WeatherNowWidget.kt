@@ -2,7 +2,8 @@ package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
-import androidx.ui.core.Text
+import androidx.ui.foundation.Box
+import androidx.ui.foundation.Text
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Shadow
 import androidx.ui.layout.*
@@ -16,52 +17,52 @@ import com.mentarey.easyweather.ui.button.VectorImage
 
 @Composable
 fun WeatherNowWidget(now: WeatherNow) {
-    Column(LayoutPadding(8.dp)) {
+    Column(Modifier.padding(8.dp)) {
         WeatherCityWidget(now.city)
         WeatherTimeWidget(now.currentTime)
         WeatherTemperatureWidget(now.temperature)
-        Spacer(LayoutHeight(height = 24.dp))
+        Spacer(Modifier.preferredHeight(height = 24.dp))
         CurrentWeatherWidget(now.currentWeather)
-        Spacer(LayoutHeight(height = 12.dp))
+        Spacer(Modifier.preferredHeight(height = 12.dp))
         DayDurationWidget(now.dayDuration)
-        Spacer(LayoutHeight(height = 12.dp))
+        Spacer(Modifier.preferredHeight(height = 12.dp))
         WindWidget(now.wind)
-        Spacer(LayoutHeight(height = 12.dp))
+        Spacer(Modifier.preferredHeight(height = 12.dp))
         ExtraOptionsWidget(now.extraOptions)
     }
 }
 
 @Composable
 fun WeatherCityWidget(city: String) {
-    val typography = MaterialTheme.typography()
-    CustomizableWeatherText(city, LayoutHeight(80.dp), typography.h3)
+    val typography = MaterialTheme.typography
+    CustomizableWeatherText(city, Modifier.preferredHeight(80.dp), typography.h3)
 }
 
 @Composable
 fun WeatherTimeWidget(currentTime: String) {
-    val typography = MaterialTheme.typography()
-    CustomizableWeatherText(currentTime, LayoutHeight(45.dp), typography.h5)
+    val typography = MaterialTheme.typography
+    CustomizableWeatherText(currentTime, Modifier.preferredHeight(45.dp), typography.h5)
 }
 
 @Composable
 fun WeatherTemperatureWidget(temperature: Temperature) {
     val currentTemp = "${temperature.current}$DEGREE_SYMBOL"
     val feelsLikeTemp = "Чувствуется как ${temperature.feelsLike}$DEGREE_SYMBOL"
-    val typography = MaterialTheme.typography()
+    val typography = MaterialTheme.typography
     Column {
-        CustomizableWeatherText(currentTemp, LayoutHeight(100.dp), typography.h1)
-        Spacer(LayoutHeight(height = 16.dp))
-        CustomizableWeatherText(feelsLikeTemp, LayoutHeight(30.dp), typography.h5)
+        CustomizableWeatherText(currentTemp, Modifier.preferredHeight(100.dp), typography.h1)
+        Spacer(Modifier.preferredHeight(height = 16.dp))
+        CustomizableWeatherText(feelsLikeTemp, Modifier.preferredHeight(30.dp), typography.h5)
     }
 }
 
 @Composable
 fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
     val weatherIconId = currentWeather.getIconResId()
-    val typography = MaterialTheme.typography()
+    val typography = MaterialTheme.typography
 
-    Row(LayoutWidth.Fill + LayoutHeight(40.dp)) {
-        Container(padding = EdgeInsets(8.dp)) {
+    Row(Modifier.fillMaxWidth() + Modifier.preferredHeight(40.dp)) {
+        Box(padding = 8.dp) {
             VectorImage(id = weatherIconId)
         }
         CustomizableWeatherText(currentWeather.forecastWithLocale, Modifier.None, typography.h5)
@@ -70,7 +71,7 @@ fun CurrentWeatherWidget(currentWeather: CurrentWeather) {
 
 @Composable
 fun DayDurationWidget(dayDuration: DayDuration) {
-    val typography = MaterialTheme.typography()
+    val typography = MaterialTheme.typography
     val dayLength = (dayDuration.sunset - dayDuration.sunrise) / 60
     val dayLengthMin = (dayLength % 60).toInt()
     val dayLengthHours = (dayLength / 60).toInt()
@@ -83,7 +84,7 @@ fun DayDurationWidget(dayDuration: DayDuration) {
 
 @Composable
 fun WindWidget(wind: Wind) {
-    val typography = MaterialTheme.typography()
+    val typography = MaterialTheme.typography
     Column {
         CustomizableWeatherText("Скорость ветра: ${wind.speed} м/c.", Modifier.None, typography.h6)
         if (wind.gust > 0.0)
@@ -94,7 +95,7 @@ fun WindWidget(wind: Wind) {
 
 @Composable
 fun ExtraOptionsWidget(extraOptions: ExtraOptions) {
-    val typography = MaterialTheme.typography()
+    val typography = MaterialTheme.typography
     Column {
         CustomizableWeatherText(
             "Видимость: ${extraOptions.visibility} км.",
@@ -129,7 +130,7 @@ fun CustomizableWeatherText(text: String, modifier: Modifier, textStyle: TextSty
         modifier = modifier,
         text = text,
         style = TextStyle(
-            color = MaterialTheme.colors().onPrimary,
+            color = MaterialTheme.colors.onPrimary,
             fontFamily = FontFamily.SansSerif,
             fontWeight = textStyle.fontWeight,
             fontSize = textStyle.fontSize,

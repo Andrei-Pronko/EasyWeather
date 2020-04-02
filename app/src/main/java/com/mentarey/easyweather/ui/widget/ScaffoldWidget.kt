@@ -1,11 +1,12 @@
 package com.mentarey.easyweather.ui.widget
 
 import androidx.compose.Composable
+import androidx.ui.core.Modifier
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.isSystemInDarkTheme
 import androidx.ui.layout.Column
-import androidx.ui.layout.Container
-import androidx.ui.layout.LayoutHeight
-import androidx.ui.layout.LayoutWidth
+import androidx.ui.layout.fillMaxWidth
+import androidx.ui.layout.preferredHeight
 import androidx.ui.material.ColorPalette
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.darkColorPalette
@@ -27,10 +28,10 @@ fun Scaffold(
 
     MaterialTheme(currentThemePalette) {
         Column {
-            Container(LayoutHeight(56.dp) + LayoutWidth.Fill) {
+            Box(Modifier.preferredHeight(56.dp) + Modifier.fillMaxWidth()) {
                 appBar()
             }
-            Container(LayoutWeight(1f)) {
+            Box(Modifier.weight(1f)) {
                 content()
             }
         }
